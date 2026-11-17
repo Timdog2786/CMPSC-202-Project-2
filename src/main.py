@@ -1,4 +1,6 @@
 import random
+import matplotlib.pyplot as plt
+from time import perf_counter
 
 def strand_generator(length: int, mutations: int, s: int | None = None):
     """
@@ -210,9 +212,50 @@ def soultion(starting: list[str], modified: list[str], correct: int = 2, incorre
 
 
 def main():
-    list1, list2 = strand_generator(7, 4)
-    print(baseline(list1, list2))
-    print(soultion(list1, list2))
+    tests = [(5, 5), (6, 7), (7, 8), (8, 9), (9, 10)] #each are (+1, +2)
+    benchmark_times = []
+    heap_times = []
+    print("running tests...")
+    for t in tests:
+        t_difference = 0
+        strands = strand_generator(t[0], t[1])
+        for _ in range(10):
+                t_start = perf_counter()
+                baseline(strands[0][:], strands[1][:])
+                t_end = perf_counter()
+                t_difference += t_end - t_start
+        benchmark_times.append(t_difference/10)
+
+        t_difference = 0
+        for _ in range(10):
+                t_start = perf_counter()
+                soultion(strands[0][:], strands[1][:])
+                t_end = perf_counter()
+                t_difference += t_end - t_start
+        heap_times.append(t_difference/10)
+
+    plt.figure(figsize=(10, 6))
+    for i in range(len(tests)):
+        tests[i] = tests[i][0]
+    plt.plot(tests, benchmark_times, marker="o", label="Baseline algorithm")
+    plt.plot(tests, heap_times, marker="o", label="Algorithmic strategy")
+    plt.xlabel("Input size")
+    plt.ylabel("Time (seconds)")
+    plt.title("Algorithm Runtime Comparison")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    plt.figure(figsize=(10, 6))
+    plt.yscale('log')
+    plt.plot(tests, benchmark_times, marker="o", label="Baseline algorithm")
+    plt.plot(tests, heap_times, marker="o", label="Algorithmic strategy")
+    plt.xlabel("Input size")
+    plt.ylabel("Time (seconds)")
+    plt.title("Algorithm Runtime Comparison (Log scale)")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
 if __name__ == "__main__":
     main()
