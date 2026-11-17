@@ -212,7 +212,7 @@ def soultion(starting: list[str], modified: list[str], correct: int = 2, incorre
 
 
 def main():
-    tests = [(5, 5), (6, 7), (7, 8), (8, 9), (9, 10)] #each are (+1, +2)
+    tests = [(5, 5), (6, 7), (7, 9), (8, 11), (9, 13)] #each are (+1, +2)
     benchmark_times = []
     heap_times = []
     print("running tests...")

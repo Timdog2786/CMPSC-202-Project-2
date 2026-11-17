@@ -44,7 +44,7 @@ def baseline(starting, modified, correct, incorrect):
 ``` 
 
 **Algorithmic Strategy**
-Our algorithemic dyanmic, and our method is to store any already computered calaulations into a dictoarny and to return that value instead of repeating already computered soultions.
+Our algorithemic dyanmic, and our method is to store any already computered calaulations into a dictonary and to return that value instead of repeating already computered soultions.
 
 Inputs:
 starting: an list of operations
