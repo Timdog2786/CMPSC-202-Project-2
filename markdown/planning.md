@@ -3,15 +3,15 @@
 **Problem Formulation**  
 You are a cybersecurity researcher analyzing two distinct strains of a new, highly obfuscated ransomware. The first binary is a sequence of $n$ assembly instructions, and the second is $m$ instructions. The malware authors have inserted junk code and deleted operational functions to evade antivirus signatures. You can align the binaries by matching identical instructions, or by inserting gaps in either sequence. Matching instructions score positive points, while inserting gaps incurs a penalty. Design an algorithm to align the sequences to maximize the similarity score, revealing the exact structural mutations the authors made.
 
-Goal - align the sequences to maximize similarity score
+Goal - align the sequences to maximize similarity score.
 
 **Baseline Solutions**
-To establish a functional baseline, we can implement a naive recursive strategy. This approach checks if the current index of the 2 strands are equal to each other, then making a recusive branch to capture every possibility.
+To establish a functional baseline, we can implement a naive recursive strategy. This approach checks if the current indices of the two strands are equal to each other, then makes a recursive branch to capture every possibility. The algorithm is looking at one instruction in the list at a time and making three branches. The first one is to add a gap within the first strand, the second branch is to add a gap within the second strand, or if the alignment on both strands is correct, it will advance both strands while adding no gap. This will ensure that even if the strands are aligned, it checks the possibility that breaking that alignment to align further strands could result in a better score.
 
 Inputs:
-starting: an list of operations
-modified: another list of operations
-correct: how much to reward correct parings
+starting: a list of operations  
+modified: another list of operations  
+correct: how much to reward correct pairings  
 incorrect: how much to punish adding gaps
 ```
 def baseline(starting, modified, correct, incorrect):
@@ -44,12 +44,12 @@ def baseline(starting, modified, correct, incorrect):
 ``` 
 
 **Algorithmic Strategy**
-Our algorithemic dyanmic, and our method is to store any already computered calaulations into a dictonary and to return that value instead of repeating already computered soultions.
+Our algorithmic strategy is dynamic programming, and our method is to store any already computed calculations in a dictionary and to return that value instead of repeating already computed solutions. Each branch's checks are nearly identical to the baseline algorithm. The main change is that it appends and records the score and alignment of each branch and stores them, to ensure further branches do not recompute already found solutions. This works because i and j represent how far the algorithm has gotten into each respective branch, and the best score it can achieve up to that point. We use memoization instead of a bottom-up approach because it allowed us to only have to tweak our baseline algorithm slightly, while making a bottom-up approach would have required a lot more brainstorming. Dynamic programming is required for this problem because each individual strand can be split into a subproblem of whether inserting a gap will increase the overall total score or not, so recursively checking every option is more efficient than testing every solution.
 
-Inputs:
-starting: an list of operations
-modified: another list of operations
-correct: how much to reward correct parings
+Inputs:  
+starting: a list of operations  
+modified: another list of operations  
+correct: how much to reward correct pairings  
 incorrect: how much to punish adding gaps
 ```
 def soultion(starting: list[str], modified: list[str], correct: int = 2, incorrect: int = 1):
@@ -92,12 +92,12 @@ def soultion(starting: list[str], modified: list[str], correct: int = 2, incorre
 # Complexity Analysis:
 
 
-Our solution - 
-$O$ - O(nm) the recusrive function becames closer to O(1) as the dictoanary fills up, and the dictonaray only has n*m possible elements to store
-$Ω$ - The input of data does not change the logic of code blocks the code runs, as it needs to complete a each walk before dedicing the best score therefor Big Ω is the same as Big O of O(nm) = n*m
-$ϴ$ - since Big O and Big Ω are the same, Big ϴ is ϴ(nm) = n*m
-Baseline solution -
-$O$ - O(3^(n+m)) as each walk fuction runs until completeion even if it was already computed, and at each step 3 walk functions are called. 
-$Ω$ - The input of data does not change the logic of code blocks the code runs, as it needs to complete a each walk before dedicing the best score therefor Big Ω is the same as Big O of O(nm) = 3^n+m
-$ϴ$ - since Big O and Big Ω are the same, Big ϴ is ϴ(n) = 3^n+m
+Our solution —
+$O$ — $O(nm)$; the recursive function becomes closer to $O(1)$ as the dictionary fills up, and the dictionary only has $n \cdot m$ possible elements to store.  
+$\Omega$ — The input data does not change the logic of the code blocks that run, as it needs to complete each walk before deciding the best score; therefore, Big $\Omega$ is the same as Big $O$, $O(nm)$.  
+$\Theta$ — Since Big $O$ and Big $\Omega$ are the same, Big $\Theta$ is $\Theta(nm)$.
 
+Baseline solution —
+$O$ — $O(3^{n+m})$, as each walk function runs until completion even if it was already computed, and at each step three walk functions are called.  
+$\Omega$ — The input data does not change the logic of the code blocks that run, as it needs to complete each walk before deciding the best score; therefore, Big $\Omega$ is the same as Big $O$, $O(3^{n+m})$.  
+$\Theta$ — Since Big $O$ and Big $\Omega$ are the same, Big $\Theta$ is $\Theta(3^{n+m})$.
